@@ -83,3 +83,32 @@ false
     )
 )
 
+
+
+;; Day 7 - Logic Operators (and/or)
+
+(define-read-only (and-i) 
+    (and true true)
+)
+
+(define-read-only (and-ii) 
+    (and true false)
+)
+
+(define-read-only (and-iii) 
+    (and 
+        (> u2 u1)
+        (not false)
+        true
+    )
+)
+
+
+(define-read-only (or-i) 
+    (or true false)
+)
+
+(define-read-only (or-ii) 
+    (or false false)
+)
+

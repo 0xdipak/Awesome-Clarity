@@ -69,3 +69,17 @@ false
 )
 
 
+;;Day 6 - Strings & Concatenating
+
+(define-read-only (hello-world) 
+(concat "Hello" " World!")
+
+)
+
+(define-read-only (hello-world-name) 
+    (concat 
+        (concat "Hello" " World!,")
+        " Clarity"
+    )
+)
+

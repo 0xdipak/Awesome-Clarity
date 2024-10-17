@@ -48,6 +48,24 @@ false
 
 ;; Day 5 - Advanced Operators
 
+;; power
+(define-read-only (exponent) 
+(pow u5 u2)
+)
 
+;; square root
+(define-read-only (sq-root) 
+(sqrti (* u5 u7))
+)
+
+;; modulo operator
+(define-read-only (fn-modulo) 
+(mod u20 u3)
+)
+
+;; log2 
+(define-read-only (log-two) 
+(log2 u25)
+)
 
 

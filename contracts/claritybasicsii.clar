@@ -37,10 +37,63 @@
         (is-some boolean)
     )
 
-)
-
 ;; >> (contract-call? .claritybasicsii params-optional-and (some u10) (some "Dipak") none)
 ;; false
 
 ;; >> (contract-call? .claritybasicsii params-optional-and (some u10) (some "Dipak") (some true))
 ;; true
+)
+
+
+
+
+
+
+;; Day 10 -  Introduction To Cons & Vars I
+
+(define-constant fav-num u10)
+(define-constant fav-string "Dipak")
+
+(define-read-only (show-constant) 
+    fav-num
+;; >> (contract-call? .claritybasicsii show-constant)
+;; u10
+)
+
+(define-read-only (show-constant-double) 
+    (* fav-num u2)
+;; >> (contract-call? .claritybasicsii show-constant-double)
+;; u20
+)
+
+
+
+(define-data-var fav-num-var uint u10)
+(define-data-var your-name (string-ascii 24) " Dipak")
+
+(define-read-only (show-var) 
+    (var-get fav-num-var)
+;; >> (contract-call? .claritybasicsii show-var)
+;;u10
+)
+
+(define-read-only (show-var-double) 
+    (* u2 (var-get fav-num-var))
+;; >> (contract-call? .claritybasicsii show-var-double)
+;; u20
+)
+
+(define-read-only (show-name) 
+    (concat "Hi," (var-get your-name))
+;; >> (contract-call? .claritybasicsii show-name)
+;; "Hi, Dipak"
+)
+
+
+
+
+
+
+
+
+

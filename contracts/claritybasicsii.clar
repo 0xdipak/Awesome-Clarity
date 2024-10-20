@@ -91,6 +91,27 @@
 
 
 
+;; Public Functions & Responses
+
+(define-read-only (response-example) 
+    (ok u10)
+)
+
+(define-public (change-name (new-name (string-ascii 24))) 
+    (ok (var-set your-name new-name))
+
+;; >> (contract-call? .claritybasicsii change-name "Dipak")
+;; (ok true)
+)
+
+
+
+;; Tuples and Merge
+
+
+
+
+
 
 
 

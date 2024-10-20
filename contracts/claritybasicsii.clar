@@ -190,6 +190,25 @@
 )
 
 
+;; Day 13 - Introduction To Keywords (tx-sender)
+
+(define-read-only (show-tx-sender) 
+    tx-sender
+
+;; >> (contract-call? .claritybasicsii show-tx-sender)
+;; 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM 
+)
+
+(define-constant admin 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM)
+
+(define-read-only (is-admin) 
+    (is-eq admin tx-sender)
+
+;; >> (contract-call?  .claritybasicsii is-admin)
+;; true
+)
+
+
 
 
 

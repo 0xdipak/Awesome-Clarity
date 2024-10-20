@@ -109,9 +109,85 @@
 ;; Tuples and Merge
 
 
+(define-read-only (read-tuple-i) 
+    {
+        user-principal: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM,
+        user-name: "Dipak",
+        user-bal: u50
+    }
+
+;; >> (contract-call? .claritybasicsii read-tuple)
+;; { user-bal: u50, user-name: "Dipak", user-principal: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM }
+
+)
 
 
+(define-public (write-tuple-i (new-user-principal principal) (new-user-name (string-ascii 24)) (new-user-bal uint) ) 
+    (ok {
+        user-principal: new-user-principal,
+        user-name: new-user-name,
+        user-bal: new-user-bal
+    })
 
+;; >> (contract-call? .claritybasicsii write-tuple-i 'ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5 "Ram" u100)
+ ;;(ok { user-bal: u100, user-name: "Ram", user-principal: 'ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5 })
+)
+
+(define-data-var original { user-principal: principal, user-name: (string-ascii 24), user-bal: uint}  
+    {
+        user-principal: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM,
+        user-name: "Dipak",
+        user-bal: u50
+    }
+
+)
+
+(define-read-only (read-original) 
+    (var-get original)
+)
+
+(define-public (merge-principal (new-user-principal principal)) 
+    (ok (merge 
+        (var-get original)
+        {user-principal: new-user-principal}
+    ))
+)
+
+(define-public (merge-username (new-user-name (string-ascii 24))) 
+    (ok 
+        (merge 
+            (var-get original)
+            {user-name: new-user-name}
+        )
+    )
+)
+
+(define-public (merge-bal (new-balance uint)) 
+    (ok 
+        (merge 
+            (var-get original)
+            {user-bal: new-balance}
+        )
+    )
+)
+
+
+(define-public (merge-all (new-user-principal principal) (new-user-name (string-ascii 24)) (new-user-bal uint) ) 
+    (ok 
+        (merge
+            (var-get original) 
+            {
+                user-principal: new-user-principal,
+                user-name: new-user-name,
+                user-bal: new-user-bal
+            }
+        )
+    )
+
+;; >> (contract-call? .claritybasicsii merge-all 'ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5 "Ram Tharu" u100)
+;; (ok { user-bal: u100, user-name: "Ram Tharu", user-principal: 'ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5 })
+
+)
 
 
 

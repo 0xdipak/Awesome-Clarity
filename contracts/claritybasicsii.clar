@@ -210,6 +210,30 @@
 
 
 
+;; Day 14 - Introduction To Conditionals
+
+(define-read-only (show-asserts (num uint)) 
+(ok (asserts! (> num u2) (err u1)))
+
+;; >> (contract-call?  .claritybasicsii show-asserts u3)
+;; (ok true)
+)
+
+
+(define-constant err-too-large (err u1))
+(define-constant err-too-small (err u2))
+(define-constant err-not-auth (err u3))
+
+(define-constant admin-one tx-sender)
+
+
+(define-read-only (check-admin-i) 
+    (ok (asserts! (is-eq tx-sender admin-one) err-not-auth))
+
+;; >> (contract-call?  .claritybasicsii check-admin-i)
+;; (ok true)
+)
+
 
 
 

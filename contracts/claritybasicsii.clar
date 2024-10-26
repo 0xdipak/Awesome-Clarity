@@ -235,5 +235,62 @@
 )
 
 
+;; Day 15 - Using Begin
+
+;; Set & say hello
+;; Counter by even
+
+(define-data-var hello-name (string-ascii 48) "Dipak")
+;; @desc - This function allows a user to provide a name, which, if different, changes a name variable & returns "Hello new name"
+;; @param - new-name: (string-ascii 48) that represents the new name
+
+(define-public (set-and-say-hello (new-name (string-ascii 48))) 
+    (begin 
+        ;; Assert that name is not empty
+        (asserts! (not (is-eq "" new-name)) (err u1))
+
+        ;; Assert that name is not equal to current name
+        (asserts! (not (is-eq (var-get hello-name) new-name)) (err u2))
+
+        ;; Var-set new name
+        (var-set hello-name new-name)
+
+        ;; Say hello new name
+      (ok (concat "Hello " (var-get hello-name)))
+    )
+
+;; >> (contract-call?  .claritybasicsii set-and-say-hello "rAM kUMAR")
+;; (ok "Hello rAM kUMAR")
+)
+
+(define-read-only (read-hello-name) 
+    (var-get hello-name)
+
+;; >> (contract-call?  .claritybasicsii read-hello-name)
+;; "Dipak"
+)
+
+
+
+(define-data-var counter uint u0)
+
+
+(define-read-only (read-counter) 
+    (var-get counter)
+)
+
+;; @desc - this func allows a user to increase the counter by only even number
+;; @param - add-num: uint that user submits to add to counter
+
+(define-public (increment-counter-event (add-num uint)) 
+    (begin 
+        ;; Assert that add-num
+        (asserts! (is-eq u0 (mod add-num u2)) (err u3))
+
+        ;; Increment & var-set counter
+        (ok (var-set counter (+ (var-get counter) add-num)))
+    )
+)
+
 
 

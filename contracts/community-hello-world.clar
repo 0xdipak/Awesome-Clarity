@@ -107,3 +107,15 @@
 
 ;; I successfully deployed my first smart contract to stcks mainnet with name "hello-world-community-explorer"
 ;; You can see my contract here : https://explorer.hiro.so/txid/0x320cf8161138ebbe92394ceb606a5cb5343127f3939b360f475b8489f5381bd7?chain=mainnet
+
+
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;; STX-CLI ;;;;;;;;;;;;;;;;;;;;;;;
+
+;; stx help
+
+;; To create a new account
+;; stx make_keychain
+
+;; To deploy contract
+;; stx deploy_contract source_file.clar contract_name fee(micro_stx) nonce(0) Private_key

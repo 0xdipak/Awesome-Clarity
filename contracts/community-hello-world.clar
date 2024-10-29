@@ -100,3 +100,10 @@
 ;;>> (contract-call?  .community-hello-world  admin-set-new-user 'ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG)
 ;; (ok true)
 )
+
+
+;; Go to https://explorer.hiro.so/sandbox/deploy?chain=mainnet
+;; Copy paste your contract and deploay to mainnet
+
+;; I successfully deployed my first smart contract to stcks mainnet with name "hello-world-community-explorer"
+;; You can see my contract here : https://explorer.hiro.so/txid/0x320cf8161138ebbe92394ceb606a5cb5343127f3939b360f475b8489f5381bd7?chain=mainnet

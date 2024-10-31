@@ -63,3 +63,29 @@
 ;; Day 21 - Intro. To Lists II & Intro. To Unwrapping I
 
 
+(define-data-var list-day-21 (list 5 uint) (list u1 u2 u3 u4))
+
+(define-read-only (list-len) 
+    (len (var-get list-day-21))
+
+;; >> (contract-call?  .claritybasicsiii  list-len)
+;; u4
+)
+
+(define-public (add-to-list (new-num uint)) 
+(ok 
+    (var-set list-day-21 
+
+       (unwrap! 
+            (as-max-len? (append (var-get list-day-21) new-num) u5)
+            (err u0)
+        )
+    )
+)
+
+;; >> (contract-call?  .claritybasicsiii add-to-list u5)
+;; (ok (list u1 u2 u3 u4 u5))
+
+;; >> (contract-call?  .claritybasicsiii add-to-list u6)
+;; (err u0)
+)

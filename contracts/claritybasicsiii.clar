@@ -1,7 +1,7 @@
 
 ;; title: claritybasicsiii
 
-;; Day 20 - Introduction To Lists I
+;;;;;;;;;;;;;;;;;;;;;;;;;; Day 20 - Introduction To Lists I ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define-read-only (list-bool) 
     (list true false true)
@@ -60,7 +60,7 @@
 )
 
 
-;; Day 21 - Intro. To Lists II & Intro. To Unwrapping I
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Day 21 - Intro. To Lists II & Intro. To Unwrapping I ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 (define-data-var list-day-21 (list 5 uint) (list u1 u2 u3 u4))
@@ -88,4 +88,57 @@
 
 ;; >> (contract-call?  .claritybasicsiii add-to-list u6)
 ;; (err u0)
+)
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;; Day 22 - Introduction To Unwrapping II ;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Unwrap! -> Optionals & response(define-public (add-to-list (new-num uint)) 
+(define-public (unwrap-example (new-num uint)) 
+(ok 
+    (var-set list-day-21 
+
+       (unwrap! 
+            (as-max-len? (append (var-get list-day-21) new-num) u5)
+            (err "err list at max-len")
+        )
+    )
+)
+
+;; >> (contract-call?  .claritybasicsiii unwrap-example u5)
+;; (ok true)
+;; >> (contract-call?  .claritybasicsiii unwrap-example u6)
+;; (err "err list at max-len")
+
+)
+
+;; Unwrap-err! -> Response
+(define-public (unwrap-error-example (input (response uint uint))) 
+    (ok (unwrap-err! input (err u10)))
+)
+
+;; Unwrap-panic -> Optional & response
+(define-public (unwrap-panic-example (new-num uint)) 
+    (ok 
+        (var-set list-day-21 
+
+            (unwrap-panic (as-max-len? (append (var-get list-day-21) new-num) u5))
+        )   
+    )
+)
+
+
+
+;; Unwrap-err-panic -> Optionsl & response
+
+;; Try! -> Optionals & response
+(define-public (try-example (input (response uint uint))) 
+    (ok 
+        (try! input)
+    )
+
+;; >> (contract-call?  .claritybasicsiii try-example (ok u1))
+;; (ok u1)
 )

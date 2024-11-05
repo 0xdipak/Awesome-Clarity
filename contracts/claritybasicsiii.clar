@@ -142,3 +142,66 @@
 ;; >> (contract-call?  .claritybasicsiii try-example (ok u1))
 ;; (ok u1)
 )
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;; Day 23 - Default-To With Tuples ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(define-constant test-tuple {
+    user: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM,
+    balance: u10,
+    referral: none
+})
+
+(define-read-only (get-test-tuple) 
+    (get user test-tuple)
+)
+(define-read-only (read-test-tuple) 
+    test-tuple
+)
+
+
+(define-constant example-tuple {
+    example-bool: true,
+    example-num: none,
+    example-string: none,
+    example-principal: tx-sender
+})
+
+(define-read-only (read-example-tuple) 
+    example-tuple
+
+;; >> (contract-call?  .claritybasicsiii read-example-tuple)
+;;{ example-bool: true, example-num: none, example-principal: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM, example-string: (some "example") }
+
+)
+
+(define-read-only (read-example-principal) 
+    (get example-principal example-tuple)
+
+;; >> (contract-call?  .claritybasicsiii read-example-principal)
+;;'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+)
+
+
+(define-read-only (read-example-num) 
+    (get example-num example-tuple)
+)
+(define-read-only (read-example-num2) 
+    (default-to u10 (get example-num example-tuple))
+
+;; >> (contract-call?  .claritybasicsiii read-example-num2)
+;; u10
+    
+)
+
+(define-read-only (read-example-string) 
+    (get example-string example-tuple)
+)
+(define-read-only (read-example-string2) 
+   (default-to "Dipak Sharma" (get example-string example-tuple))
+
+;; >> (contract-call?  .claritybasicsiii read-example-string2)
+;; "Dipak Sharma"
+)

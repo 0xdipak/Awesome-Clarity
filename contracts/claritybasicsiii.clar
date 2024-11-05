@@ -205,3 +205,65 @@
 ;; >> (contract-call?  .claritybasicsiii read-example-string2)
 ;; "Dipak Sharma"
 )
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  Day 24 - Core Conditionals II : Match/If  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(define-read-only (if-example (test-bool bool)) 
+    (if test-bool
+      ;; Evaluate to true
+      "Its true."
+      ;; Evaluate to false
+      "Its false."
+    )
+
+;; >> (contract-call?  .claritybasicsiii if-example true)
+;; "Its true."      
+)
+
+
+(define-read-only (if-example-num (num uint)) 
+    (if  (and (> num u0) (< num u10))
+    ;; Evaluate to true
+        num 
+        ;; Evaluate to false
+       u10
+    )
+)
+
+
+
+(define-read-only (match-example) 
+    (match (some u1) 
+        ;; Some value / there was some optional
+        match-value (+ u1 match-value) 
+        ;; None value / there was no optional
+        u0
+    )
+
+
+;; >> (contract-call?  .claritybasicsiii match-example)
+;; u2
+)
+
+
+(define-read-only (match-optional (test-value (optional uint))) 
+    (match test-value
+        match-value (+ u2 match-value)
+        u0
+    )
+
+;; >> (contract-call?  .claritybasicsiii match-optional (some u10))
+;; u12
+)
+
+
+(define-read-only (match-response (test-value (response uint uint))) 
+    (match test-value
+        ok-value ok-value
+        err-value u0
+     )
+
+;; >> (contract-call?  .claritybasicsiii match-response (ok u5))
+;; u5
+)

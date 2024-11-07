@@ -324,3 +324,56 @@
 ;; (some { balance: u20, referral: none, username: "Dipak" })
 
 )
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  Day 26 - Introduction To Maps II  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Insert Map
+
+(define-public (insert-first-map (username (string-ascii 24))) 
+    (ok 
+        (map-insert first-map tx-sender username)
+    )
+)
+
+
+
+(define-map third-map {user: principal, cohort: uint} {
+    username: (string-ascii 24),
+    balance: uint,
+    referral: (optional principal)
+})
+
+(define-public (set-third-map (new-username (string-ascii 24)) (new-balance uint) (new-referral (optional principal))) 
+    (ok 
+        (map-set third-map {user:tx-sender, cohort:u1} {
+            username: new-username,
+            balance: new-balance,
+            referral: new-referral
+        })
+
+    )
+
+;; >> (contract-call?  .claritybasicsiii set-third-map "Dipak" u50 none)
+;; (ok true)
+)
+
+(define-public (delete-third-map) 
+    (ok 
+        (map-delete third-map {user: tx-sender, cohort: u1})
+    )
+
+;; >> (contract-call?  .claritybasicsiii delete-third-map)
+;; (ok true)
+)
+
+(define-read-only (get-third-map) 
+    (map-get? third-map {user: tx-sender, cohort: u1})
+
+;; >> (contract-call?  .claritybasicsiii get-third-map)
+;;  (some { balance: u50, referral: none, username: "Dipak" })
+)
+
+
+

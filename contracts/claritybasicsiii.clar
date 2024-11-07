@@ -267,3 +267,60 @@
 ;; >> (contract-call?  .claritybasicsiii match-response (ok u5))
 ;; u5
 )
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;  Day 25 - Introduction To Maps I ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(define-map first-map principal (string-ascii 24))
+
+
+;; Set Map
+(define-public (set-first-map (username (string-ascii 24))) 
+    (ok 
+        (map-set first-map tx-sender username)
+    )
+
+;; >> (contract-call?  .claritybasicsiii set-first-map "Dipak")
+;; (ok true)
+)
+
+;; Get Map
+(define-read-only (get-first-map) 
+    (map-get? first-map tx-sender)
+
+;; >> (contract-call?  .claritybasicsiii get-first-map)
+;; (some "Dipak")
+)
+
+
+;; Map with tuple
+(define-map second-map principal {
+    username: (string-ascii 24),
+    balance: uint,
+    referral: (optional principal)
+})
+
+(define-public (set-second-map (new-username (string-ascii 24)) (new-balance uint) (new-referral (optional principal))) 
+    (ok 
+        (map-set second-map tx-sender {
+            username: new-username,
+            balance: new-balance,
+            referral: new-referral
+        })
+
+    )
+
+;; >> (contract-call?  .claritybasicsiii set-second-map "Dipak" u20 none)
+;; (ok true)
+)
+
+
+(define-read-only (get-second-map) 
+    (map-get? second-map tx-sender)
+
+
+;; >> (contract-call?  .claritybasicsiii get-second-map)
+;; (some { balance: u20, referral: none, username: "Dipak" })
+
+)

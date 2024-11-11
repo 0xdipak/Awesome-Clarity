@@ -20,11 +20,14 @@
 ;;;; Cons, Vars & Maps ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Admin list of principals
+(define-data-var admins (list 10 principal) (list tx-sender))
+
 
 ;; Map that keeps track of a single track
 (define-map track { artist: principal, album-id: uint, track-id: uint } { 
     title: (string-ascii 24),
-    dutation: uint,
+    duration: uint,
     featured: (optional principal)
 })
 
@@ -74,6 +77,7 @@
 
 
 ;; Day 29 - Outlining Public Functions
+;; Day 30 - Implementing Public Functions
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Write Functions ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -81,23 +85,39 @@
 ;; Add a track
 ;; @desc - function that allows a user or admin to add a track.
 ;; @params - title (string-ascii 24), duration (uint), featured-artist (optional principal), album-id (uint)
-(define-private (add-a-track (artist (optional principal)) (title (string-ascii 24)) (duration uint) (featured (optional principal)) (album-id uint)) 
+(define-public (add-a-track (artist principal) (title (string-ascii 24)) (duration uint) (featured (optional principal)) (album-id uint)) 
     (let 
         (
-           (test u0)
+           (current-discography (unwrap! (map-get? discography artist) (err u0)))
+           (current-album (unwrap! (index-of? current-discography album-id) (err u2)))
+           (current-album-data (unwrap! (map-get? album {artist: artist, album-id: album-id}) (err u3)))
+           (current-album-tracks (get tracks current-album-data))
+           (current-album-track-id (len current-album-tracks))
+           (next-album-track-id (+ u1 current-album-track-id))
         )
 
         ;; Assert that tx-sender is either artist or admin
-
-        ;; Assert that album exists in discography
+        (asserts! (or (is-eq tx-sender artist) (is-some (index-of? (var-get admins) tx-sender))) (err u1))
 
         ;; Assert that duration is less than 600 (10 mins)
+        (asserts! (< duration u600) (err u3))
 
         ;; Map-set new track
+        (map-set track {artist: artist, album-id: album-id, track-id: next-album-track-id} {
+            title: title,
+            duration: duration,
+            featured: featured
+        })
 
-        ;; Map-set append track to album
+        ;; Map-set album map by appending new track to album
+        (ok (map-set album {artist: artist, album-id: album-id} 
+            (merge 
+                current-album-data
+                {tracks: (unwrap! (as-max-len? (append current-album-tracks next-album-track-id) u10) (err u4))}
 
-        (ok test)
+            )
+        ))
+
     )
 )
 

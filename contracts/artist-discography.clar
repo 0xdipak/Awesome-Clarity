@@ -78,6 +78,7 @@
 
 ;; Day 29 - Outlining Public Functions
 ;; Day 30 - Implementing Public Functions
+;; Day 31 - Implementing Public Functions & Manual Testing
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Write Functions ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -124,26 +125,36 @@
 ;; Add an album
 ;; @desc - function that allows the artist to add a new album or start a new discography & then add album
 
-(define-public (add-album-or-create-discography-and-add-album (artist (optional principal)) (album-title (string-ascii 24))) 
+(define-public (add-album-or-create-discography-and-add-album (artist principal) (album-title (string-ascii 24))) 
     (let 
         (
-            ;; local vars
+            (current-discography (default-to (list ) (map-get? discography artist)))
+            (current-album-id (len current-discography))
+            (next-album-id (+ u1 current-album-id))
         ) 
 
         ;; Check whether discography exists / if discography is-some
+        (ok (if (is-eq current-album-id u0)
+            ;; Empty discography
+            (begin 
+                (map-set discography artist (list current-album-id))
+                (map-set album {artist: artist, album-id: current-album-id} {
+                    title: album-title,
+                    tracks: (list ),
+                    height-published: block-height
+                })
+            )
 
             ;; Discography exists
-
-
-            ;; Discography does not exists
-                ;; Map-set new discography
-
-
-        ;; Map-set new album
-
-        ;; Append new album to discography
-
-        (ok true)
+            (begin 
+                (map-set discography artist (unwrap! (as-max-len? (append current-discography next-album-id) u10) (err u4)))
+                (map-set album {artist: artist, album-id: next-album-id} {
+                    title: album-title,
+                    tracks: (list ),
+                    height-published: block-height
+                })
+            )
+        ))
     )
 
 )
@@ -189,3 +200,24 @@
     ) 
     
 )
+
+
+;;;;;;;;;;;;;;;; Mannual Testing ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; >> (contract-call?  .artist-discography get-discography 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM)
+;; none
+
+;; >> (contract-call?  .artist-discography add-album-or-create-discography-and-add-album 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM "Dipak's Album")
+;; (ok true)
+
+;; >> (contract-call?  .artist-discography get-discography 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM)
+;; (some (list u0))
+
+;; >> (contract-call?  .artist-discography get-album-data 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM u0)
+;; (some { height-published: u1, title: "Dipak's Album", tracks: (list ) })
+
+;; >> (contract-call?  .artist-discography add-a-track 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM "Ram's Track" u180 none u0)
+;; (ok true)
+
+;; >> (contract-call?  .artist-discography get-track-data 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM u0 u1)
+;; (some { duration: u180, featured: none, title: "Ram's Track" })

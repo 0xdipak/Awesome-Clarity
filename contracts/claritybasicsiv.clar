@@ -44,3 +44,46 @@
         (ok (var-set counter (+ u1 current-counter)))
     )
 )
+
+
+;; Day 32 - Syntax
+
+;; Trailing (heavy parenthesis that trail)
+;; Encapsulated (heighlights internal functions)
+
+
+(define-public (increase-count-trailing (increase-by uint)) 
+    (begin 
+        ;; Assert that tx-sender is not previous counter-history user
+        (asserts! 
+            (not (is-eq 
+                (some tx-sender) (get user (map-get? counter-history (var-get counter))))) (err u0))
+
+        (ok (var-set counter (+ (var-get counter) u1)))
+    )
+)
+
+
+
+(define-public (increase-count-encapsulation (increase-by uint)) 
+    (begin 
+        ;; Assert that tx-sender is not previous counter-history user
+        (asserts! 
+            (not (is-eq 
+                    (some tx-sender) 
+                    (get user 
+                        (map-get? counter-history (var-get counter)))
+            )) 
+            (err u0)
+        )
+
+        (ok 
+            (var-set counter 
+                (+ 
+                    (var-get counter) 
+                    u1
+                )
+            )
+        )
+    )
+)

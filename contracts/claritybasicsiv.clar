@@ -129,3 +129,5 @@
 (define-public (burn-half-of-balance) 
     (stx-burn? (/ (stx-get-balance tx-sender) u2) 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM)
 )
+
+;;

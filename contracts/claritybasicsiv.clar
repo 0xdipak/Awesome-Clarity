@@ -130,4 +130,26 @@
     (stx-burn? (/ (stx-get-balance tx-sender) u2) 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM)
 )
 
-;;
+;; Day 35 - Block-height
+
+(define-read-only (read-current-height) 
+    block-height
+
+;; >> (contract-call?  .claritybasicsiV read-current-height)
+;; u1
+)
+
+(define-constant day-in-blocks u144)
+(define-read-only (has-a-day-passed) 
+    (if (> block-height day-in-blocks) 
+        true 
+        false
+    )
+)
+
+(define-read-only (has-a-week-passed) 
+    (if (> block-height (* day-in-blocks u7)) 
+        true 
+        false
+    )
+)

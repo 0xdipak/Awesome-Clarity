@@ -87,3 +87,20 @@
         )
     )
 )
+
+
+
+
+;; Day 33 - STX Transfer
+
+(define-public (send-stx-single) 
+    (stx-transfer? u100000 tx-sender 'ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG)
+)
+
+
+(define-public (send-stx-double) 
+    (begin 
+        (unwrap! (stx-transfer? u100000 tx-sender 'ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG) (err u0))
+        (stx-transfer? u100000 tx-sender 'ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5)
+    )
+)

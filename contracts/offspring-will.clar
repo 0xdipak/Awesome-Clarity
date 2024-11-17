@@ -5,14 +5,24 @@
 ;; By 0xdipak
 
 
-
 ;; Offspring Wallet
 ;; This is our main map that is created & funded by parents, & only unlockable by an assigned offspring (principal)
 ;; Principal -> {offspring-principal: principal, offspring-dob: uint, balance: uint}
+;; 1. Create wallet
+;; 2. Fund wallet
+;; 3. Claim wallet
+    ;; A. Offspring
+    ;; B. Parent/Admin
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Cons,Vars & Maps ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Deployer
+(define-constant deployer tx-sender)
+
+;; Contract
+(define-constant contract (as-contract tx-sender))
 
 ;; Create Offspring wallet fee
 (define-constant create-wallet-fee u5000000)
@@ -87,14 +97,55 @@
     )
 )
 
+;; Get earned fees
+(define-read-only (get-earned-fees) 
+    (var-get total-fee-earned)
+)
+
+
+;;Get STX in contract
+(define-read-only (get-contract-stx-balance) 
+    (stx-get-balance contract)
+)
 
 
 
-
+;; Day 39 - Outlining Public Functions I
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Parent Functions ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Create wallet
+;; @desc - creates new offspring wallet with new parent (no initial deposit)
+;; @param - new-offspring-principal: principal, new-offspring-dob: uint
+(define-public (create-wallet (new-offspring-principal principal) (new-offspring-dob uint)) 
+    (let 
+        (
+            ;; Local vars
+
+        )
+
+        ;; Assert that map-get? offspring-wallet is-none
+
+
+        ;; Assert that new-offspring-dob is at least higher than block-height - 18 years of blocks
+
+        ;; Map-set offspring-wallet
+        (ok true)
+    )
+)
+
+;; Fund wallet
+;; @desc - allows anyone to fund an exisiting wallet
+;; @param -  parent-principal: principal, amount: uint
+(define-public (fund-wallet (parent-principal principal) (amount uint)) 
+    (let 
+        (
+            ;; local vars
+        ) 
+        (ok true)
+    )
+)
 
 
 

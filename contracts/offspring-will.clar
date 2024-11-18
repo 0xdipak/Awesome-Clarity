@@ -30,8 +30,8 @@
 ;; Add offspring wallet funds fee
 (define-constant add-wallet-fund-fee u2000000)
 
-;; Min. Offspring wallet funds fee
-(define-constant min-create-wallet-fee u5000000)
+;; Min. Offspring wallet funds amount
+(define-constant min-create-wallet-amount u5000000)
 
 ;; Early withdrawal fee (10%)
 (define-constant early-withdrawal-fee u10)
@@ -111,6 +111,7 @@
 
 
 ;; Day 39 - Outlining Public Functions I
+;; Day 40 - Outlining Public Functions II
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Parent Functions ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -130,6 +131,12 @@
 
         ;; Assert that new-offspring-dob is at least higher than block-height - 18 years of blocks
 
+        ;; Assert that new-offspring-principal is not an admin or tx-sender
+
+        ;; Pay create-wallet-fee in stx
+
+        ;; Var-set total-fees
+
         ;; Map-set offspring-wallet
         (ok true)
     )
@@ -137,28 +144,122 @@
 
 ;; Fund wallet
 ;; @desc - allows anyone to fund an exisiting wallet
-;; @param -  parent-principal: principal, amount: uint
-(define-public (fund-wallet (parent-principal principal) (amount uint)) 
+;; @param -  parent: principal, amount: uint
+(define-public (fund-wallet (parent principal) (amount uint)) 
     (let 
         (
             ;; local vars
+            (current-offspring-wallet (unwrap! (map-get? offspring-wallet parent) (err "err-no-offspring-wallet")))
         ) 
+
+        ;; Assert that amount is higher tha min-add-wallet-amount (5 STX)
+
+        ;; Send stx (amount-fee) to contract
+
+        ;; Send stx(fee) to deployer
+
+        ;; Var-set total-fees
+
+        ;; Map-set current offspring-wallet by merging with old balance + amount
         (ok true)
     )
 )
-
-
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Offspring Functions ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; Claim wallet
+;; @desc - allows offspring to claim wallet once & once only
+;; @param -  parent: principal
+(define-public (claim-wallet (parent principal)) 
+    (let 
+        (
+            ;; Local vars
+            (current-offspring-wallet (unwrap! (map-get? offspring-wallet parent) (err "err-no-offspring-wallet")))
+        ) 
+
+        ;; Assert that tx-sender is-eq to offspring-principal
+
+        ;; Assert that block-height is 18 years in block later than offspring-dob
+
+        ;; Send stx (amount - withdrawl fee) to offspring
+
+        ;; Send stx withdrawal to deployer
+
+        ;; Delete offspring-wallet map
+
+        ;; Update total-fees-earned
+        (ok true)
+    )
+)
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Emergency Withdrawal ;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Emergency claim
+;; @desc - Allows either or an admin to withdraw all stx (- emergency withdraw fee), back to parent & remove wallet
+;; @param - parent: principal
+(define-public (emergancy-claim (parent principal)) 
+    (let 
+        (
+            ;; Local vars
+            (current-offspring-wallet (unwrap! (map-get? offspring-wallet parent) (err "err-no-offspring-wallet")))
+        ) 
+
+        ;; Assert that tx-sender is either parent or tx-sender is one of the admins
+
+        ;; Assert that block-height is less than 18 years from DOB
+
+        ;; Send stx (amount - emergency-withdrawl fee) to offspring
+
+        ;; Send stx emergency-withdrawal to deployer
+
+        ;; Delete offspring-wallet map
+
+        ;; Update total-fees-earned
+        (ok true)
+    )
+)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Admin Functions ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Add admin
+;; @desc - function to add an admin to existing admin list
+;; @param - new-admin: principal
+(define-public (add-admin) 
+    (let 
+        (
+            ;; Local vars
+        )
+
+        ;; Assert that tx-sender is a current admin
+
+        ;; Assert that new-admin does not exists in list of admins
+
+        ;; Append new admin to list of admins
+        (ok true)
+    )
+)
+
+;; Remove admin
+;; @desc - functions to remove an exisitng admin
+;; @param - remove-admin : principal
+(define-public (remove-admin) 
+    (let 
+        (
+            ;; Local vars
+        )
+
+        ;; Assert that tx-sender is a current admin
+
+        ;; Filter remove removed-admin
+        (ok true)
+    )
+)

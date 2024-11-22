@@ -112,6 +112,7 @@
 
 ;; Day 39 - Outlining Public Functions I
 ;; Day 40 - Outlining Public Functions II
+;; Day 41 - Implementing Public Functions I
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Parent Functions ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -123,22 +124,32 @@
     (let 
         (
             ;; Local vars
-
+            (current-total-fees (var-get total-fee-earned))
+            (new-total-fees (+ current-total-fees create-wallet-fee))
         )
 
         ;; Assert that map-get? offspring-wallet is-none
-
+        (asserts! (is-none (map-get? offspring-wallet tx-sender)) (err "err-wallet-already-exists"))
 
         ;; Assert that new-offspring-dob is at least higher than block-height - 18 years of blocks
+        ;; (asserts! (> new-offspring-dob (- block-height eighteen-years-in-block-height)) (err "err-past-18-years"))
 
         ;; Assert that new-offspring-principal is not an admin or tx-sender
+        (asserts! (or (not (is-eq tx-sender new-offspring-principal)) (is-none (index-of? (var-get admins) new-offspring-principal))) (err "err-invalid-offspring-principal"))
 
-        ;; Pay create-wallet-fee in stx
+        ;; Pay create-wallet-fee in stx (5STX)
+        (unwrap! (stx-transfer? create-wallet-fee tx-sender deployer) (err "err-stx-transfer"))
 
         ;; Var-set total-fees
+        (var-set total-fee-earned new-total-fees)
 
         ;; Map-set offspring-wallet
-        (ok true)
+        (ok (map-set offspring-wallet tx-sender {
+            offspring-principal: new-offspring-principal,
+            offspring-dob: new-offspring-dob,
+            balance: u0
+        }))
+        
     )
 )
 
